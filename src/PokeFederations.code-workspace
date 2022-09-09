@@ -1,0 +1,16 @@
+{
+    "folders": [
+        {
+            "path": "../../ui-components"
+        },
+        {
+            "path": "../../ui-model"
+        },
+        {
+            "path": "../../ui-utils"
+        },
+        {
+            "path": ".."
+        }
+    ]
+}
