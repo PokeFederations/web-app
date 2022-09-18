@@ -2,26 +2,36 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const { ModuleFederationPlugin } = require("webpack").container;
+const dependencies = require('../package.json').dependencies;
 
 module.exports = {
   mode: "development",
-  entry: path.resolve(__dirname, "../src", "index.js"),
+  entry: path.resolve(__dirname, "../src", "index.ts"),
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "/dist"),
     filename: "[name].bundle.js",
+    chunkFilename: '[name].chunk.js',
+    publicPath: '/',
   },
+  devtool: 'inline-source-map',
   devServer: {
     static: {
-      directory: path.resolve(__dirname, "dist"),
+      directory: path.resolve(__dirname, "/dist"),
     },
     open: true,
-    port: 3000,
+    port: 5555,
     historyApiFallback: true,
+  },
+  resolve: {
+    extensions: [".js", ".json", ".ts", ".tsx"],
+  },
+  experiments: {
+    topLevelAwait: true,
   },
   module: {
     rules: [
       {
-        test: /\.(jsx|js|tsx|ts)$/,
+        test: /\.(ts|tsx)$/,
         include: path.resolve(__dirname, "../src"),
         exclude: path.resolve(__dirname, "node_modules"),
         use: [
@@ -36,6 +46,7 @@ module.exports = {
                   },
                 ],
                 "@babel/preset-react",
+                "@babel/preset-typescript",
               ],
             },
           },
@@ -55,14 +66,30 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
+  },
   plugins: [
     new ModuleFederationPlugin({
       name: "WebApp",
       filename: "remoteEntry.js",
       remotes: {
-        // HomePage: "HomePage@http://localhost:3000/remoteHomePageEntry.js",
+        "@components": "components@http://localhost:5001/remoteEntry.js",
+        "@utils": "utils@http://localhost:5002/remoteEntry.js",
+        "@models": "models@http://localhost:5003/remoteEntry.js"
       },
-      shared: ["react", "react-dom"],
+      shared: {
+        "react": {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: dependencies['react'],
+        },
+        "react-dom/client": {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: dependencies['react-dom'],
+        },
+      }
     }),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
