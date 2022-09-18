@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react';
 
-const Fallback = () => <div>fallback component</div>
+const Fallback = () => <div>fallback component</div>;
 
 export default Fallback;
