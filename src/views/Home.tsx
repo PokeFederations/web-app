@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Fallback } from '../components';
 import handleHelloWorldAlert from '@utils/handleHelloWorldAlert';
 import useGetPokemonById from '@models/PokemonModel';
+import TPokemonCard from "../../@mf-typescript/@components/PokemonCard";
 const Button = React.lazy(() => import('@components/Button'));
-const PokemonCard = React.lazy(() => import('@components/PokemonCard'));
+const PokemonCard = React.lazy(() => import('@components/PokemonCard')) as unknown as typeof TPokemonCard;
 
 const Home = () => {
   const navigate = useNavigate();
