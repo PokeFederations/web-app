@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
-import { Fallback } from '../components';
-import useGetPokemonById from '@models/PokemonModel';
+import { Fallback } from '../../components';
+import useGetPokemonById from '@models/useGetPokemonById';
 const PokemonCard = React.lazy(() => import('@components/PokemonCard'));
 
 const Pokemon = () => {

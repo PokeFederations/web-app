@@ -1,11 +1,12 @@
 import React, { useState, Suspense } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
-import { Fallback } from '../components';
+import { Fallback } from '../../components';
 import handleHelloWorldAlert from '@utils/handleHelloWorldAlert';
-import useGetPokemonById from '@models/PokemonModel';
+import useGetPokemonById from '@models/useGetPokemonById';
+import TPokemonCard from "../../../@mf-typescript/@components/PokemonCard";
 const Button = React.lazy(() => import('@components/Button'));
-const PokemonCard = React.lazy(() => import('@components/PokemonCard'));
+const PokemonCard = React.lazy(() => import('@components/PokemonCard')) as unknown as typeof TPokemonCard;
 
 const Home = () => {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ const Home = () => {
           Button component comming from ui-components
         </Button>
       </Suspense>
+      <Link to="/pokemon/all">View all pokemons</Link>
     </div>
   );
 };

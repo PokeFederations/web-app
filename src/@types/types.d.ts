@@ -5,4 +5,5 @@ declare module '@components/PokemonCard';
 declare module '@utils/handleHelloWorldAlert';
 
 declare module '@models/QueryClientProvider';
-declare module '@models/PokemonModel';
+declare module '@models/useGetPokemonById';
+declare module '@models/useGetPokemonMany';
