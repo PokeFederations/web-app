@@ -2,8 +2,9 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import QueryClientProvider from '@models/QueryClientProvider';
 import ThemeProvider from '@components/ThemeProvider';
-import Home from './views/Home';
-import Pokemon from './views/Pokemon';
+import Home from './modules/Home';
+import Pokemon from './modules/Pokemon';
+import AllPokemons from './modules/AllPokemons';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/pokemon/:pokemonId" element={<Pokemon />} />
+            <Route path="/pokemon/all" element={<AllPokemons />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
