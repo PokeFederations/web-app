@@ -1,7 +1,7 @@
 const { ModuleFederationPlugin } = require("webpack").container;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const FederatedTypesPlugin = require('@module-federation/typescript');
+// const FederatedTypesPlugin = require('@module-federation/typescript');
 
 const path = require("path");
 const dependencies = require('../package.json').dependencies;
@@ -95,7 +95,7 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin(moduleFederationConfig),
-    new FederatedTypesPlugin(moduleFederationConfig),
+    // new FederatedTypesPlugin(moduleFederationConfig),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: "./src/index.html",

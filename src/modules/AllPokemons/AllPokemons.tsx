@@ -1,48 +1,36 @@
-import React, { Suspense, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Fallback } from '../../components';
-import getPokemonById from '@models/useGetPokemonById';
+import parsePokemonToPartial from '@utils/parsePokemonToPartial';
+import useViewModel from './useViewModel';
+
 const PokemonCard = React.lazy(() => import('@components/PokemonCard'));
+const Button = React.lazy(() => import('@components/Button'));
+const Grid = React.lazy(() => import('@components/Grid'));
 
 const AllPokemons = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [pokemonList, setPokemonList] = useState<any[]>([]);
-
-  for(let i = 1; i <= 10; i++) {
-    getPokemonById(
-      { id: i,
-        options: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onSuccess: (pokemon: any) => setPokemonList((prevState) => [...prevState, pokemon]),
-        },
-      },
-    );
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getParsedPokemon = (pokemon: any) => ({
-    id: pokemon.id,
-    name: pokemon.name,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    types: [...pokemon.types.map((type: any) => type.type.name)],
-    sprites: [pokemon.sprites.front_default, pokemon.sprites.back_default],
-  });
+  const navigate = useNavigate();
+  const { pokemonList, handleLoadMore, isLoading } = useViewModel();
 
   return (
-    <div>
-      <Link to="/">Return to home</Link>
+    <div style={{ flexGrow: 1 }}>
       <Suspense fallback={<Fallback />}>
-{        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}        {pokemonList.length > 0 && pokemonList.map((pokemon: any, index: number) => (
-          <PokemonCard
-            key={index}
-            pokemon={getParsedPokemon(pokemon)}
-            onNameClick={(id: number) => console.log({ id })}
-            onTypeClick={(type: string) => console.log({ type })}
-          />
-        ))
-        }
+        <Grid container spacing={1.2}>
+          {pokemonList.map((pokemon: any, index: number) => (
+              <Grid key={index} item xs={1.2}>
+                <PokemonCard
+                  pokemon={parsePokemonToPartial(pokemon)}
+                  onNameClick={(id: number) => navigate(`/pokemon/${id}`)}
+                  onTypeClick={(type: string) => console.log({ type })}
+                />
+              </Grid>
+            ))
+          }
+        </Grid>
+        <div>
+          <Button onClick={handleLoadMore} disabled={isLoading}>Load more</Button>
+        </div>
       </Suspense>
     </div>
   );
